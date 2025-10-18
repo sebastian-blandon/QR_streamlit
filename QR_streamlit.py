@@ -11,9 +11,36 @@ from typing import Optional, Tuple, List, Dict, Any
 from urllib.parse import urlparse
 
 import streamlit as st
+import streamlit.components.v1 as components
+import json
 from PIL import Image
 import qrcode
 from qrcode.constants import ERROR_CORRECT_L, ERROR_CORRECT_M, ERROR_CORRECT_Q, ERROR_CORRECT_H
+
+def set_tab_order(labels_in_order: list[str]) -> None:
+    """
+    Fija el tabindex de los inputs/textarea de Streamlit según el orden de sus etiquetas.
+    Busca por aria-label (Streamlit lo pone igual al texto de la etiqueta).
+    """
+    js = f"""
+    <script>
+      const order = {json.dumps(labels_in_order)};
+      function applyTabIndex() {{
+        let idx = 1;
+        order.forEach(lbl => {{
+          const el = window.parent.document.querySelector(
+            `input[aria-label="${{lbl}}"], textarea[aria-label="${{lbl}}"]`
+          );
+          if (el) el.tabIndex = idx++;
+        }});
+      }}
+      // Ejecutar tras render; repetir por si hay re-render
+      setTimeout(applyTabIndex, 100);
+      setTimeout(applyTabIndex, 500);
+      setTimeout(applyTabIndex, 1000);
+    </script>
+    """
+    components.html(js, height=0, width=0)
 
 # --- dependencias opcionales (carga perezosa) ---
 _HAS_SVG = None
@@ -409,15 +436,15 @@ with tab2:
     st.subheader("Modo vCard")
     col1, col2 = st.columns(2)
     with col1:
-        given = st.text_input("Nombres (Given)", value="")
+        given = st.text_input("Nombres", value="")
         org = st.text_input("Organización", value="")
         tel = st.text_input("Teléfono", value="")
         street = st.text_input("Calle", value="")
         region = st.text_input("Región/Depto", value="")
         country = st.text_input("País", value="")
     with col2:
-        family = st.text_input("Apellidos (Family)", value="")
-        title_v = st.text_input("Cargo (TITLE)", value="")
+        family = st.text_input("Apellidos", value="")
+        title_v = st.text_input("Cargo", value="")
         email = st.text_input("Email", value="")
         city = st.text_input("Ciudad", value="")
         postal = st.text_input("Código Postal", value="")
@@ -480,6 +507,17 @@ with tab2:
     except Exception as e:
         st.warning(str(e))
 
+
+# Orden deseado izquierda→derecha por fila (ajústalo a tus etiquetas exactas)
+set_tab_order([
+    "Nombres", "Apellidos",
+    "Organización", "Cargo",
+    "Teléfono", "Email",
+    "Calle", "Ciudad",
+    "Región/Depto", "Código Postal",
+    "País", "Sitio web",
+    "Nota"
+])
 
 # --------- Batch XLSX ---------
 with tab3:
