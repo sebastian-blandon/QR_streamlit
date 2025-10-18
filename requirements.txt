@@ -4,3 +4,4 @@ segno
 Pillow
 pandas
 numpy
+openpyxl
