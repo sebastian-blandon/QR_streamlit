@@ -397,7 +397,7 @@ with tab1:
             else:
                 payload = build_payload_url(url, title, include_title)
                 img = generate_qr_pil(payload, version, error_label, box_size, border, white_bg, logo_img, logo_pct)
-                st.image(img, caption="Previsualización", use_column_width=True)
+                st.image(img, caption="Previsualización", width="stretch")
 
     with col_b:
         if st.button("Descargar (URL/Texto)"):
@@ -466,7 +466,7 @@ with tab2:
                     note=note, version=vver
                 )
                 img = generate_qr_pil(payload, version, error_label, box_size, border, white_bg, logo_img, logo_pct)
-                st.image(img, caption="Previsualización", use_column_width=True)
+                st.image(img, caption="Previsualización", width="stretch")
             except Exception as e:
                 st.error(str(e))
 
