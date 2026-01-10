@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    container_name: QR_streamlit
+    ports:
+      - "127.0.0.1:8501:8501"
+    restart: unless-stopped
+    # Opcional: Variables de entorno si las necesitas
+    # environment:
+    #   - MI_VARIABLE=valor

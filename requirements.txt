@@ -1,7 +1,0 @@
-streamlit
-qrcode[pil]
-segno
-Pillow
-pandas
-numpy
-openpyxl

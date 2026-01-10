@@ -1,0 +1,16 @@
+# Ignorar el entorno virtual local
+.venv
+venv
+ENV
+
+# Ignorar caché de python y uv
+__pycache__
+.uv_cache
+
+# Ignorar git
+.git
+.gitignore
+
+# Otros archivos innecesarios
+*.md
+LICENSE
