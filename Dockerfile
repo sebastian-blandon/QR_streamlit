@@ -34,7 +34,9 @@ COPY . .
 EXPOSE 8501
 
 # Comprobación de salud (Healthcheck) recomendada para Streamlit
-HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health || exit 1
+#HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health')" || exit 1
 
 # 6. Comando de ejecución
 # Es importante poner --server.address=0.0.0.0 para que sea accesible desde fuera del contenedor
