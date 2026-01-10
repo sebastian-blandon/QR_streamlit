@@ -6,5 +6,6 @@ services:
       - "127.0.0.1:8501:8501"
     restart: unless-stopped
     # Opcional: Variables de entorno si las necesitas
-    # environment:
-    #   - MI_VARIABLE=valor
+    environment:
+      - NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=0
+      - OPENBLAS_NUM_THREADS=1
